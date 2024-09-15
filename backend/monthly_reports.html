@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Report</title>
+    <style>
+        table{
+            text-align: center; 
+            border: 1px solid #dddddd; 
+            padding: 12px;
+        }
+        th, td{
+            padding: 12px;
+        }
+        .download-button {
+            padding: 10px 20px;
+            background-color: #4CAF50; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-size: 16px; 
+        }
+        .download-button:hover {
+            background-color: #45a049; 
+        }
+    </style>
+</head>
+<body>
+    <img src="https://i.ibb.co/VYNj5Mw/header.png" alt="header" border="0">
+    <p>Hello <b>{{ user_details.stored_name }}</b>, hope your doing well!</p>
+    <p>This is your previous month Report. Just have a look.</p>
+
+    <p>List of books you were issued in last month</p>
+    <div>
+        <table>
+            <tr>
+                <th >S No</th>
+                <th >Book Name</th>
+                <th >Issue Date</th>
+                <th >Due on</th>
+                <th >Current Status</th>
+            </tr>
+            {% for book in lastmonth_books %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ book_details[bid==book.bid].b_name }}</td>
+                <td>{{ book.issue_date.strftime("%Y-%m-%d") }}</td>
+                <td>{{ book.return_date.strftime("%Y-%m-%d") }}</td>
+                {% if book.book_status == 2 %}
+                <td style="color: green;">Returned</td>
+                {% else %}
+                <td style="color: red;">Yet to return</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <br>
+    <br>
+    <div>
+    <p>Books that were issued belong to following Section</p>
+    <table>
+        <tr>
+            <th>S No</th>
+            <th>Section Name</th>
+            <th>No of books issued</th>
+        </tr>
+        {% for key, value in sections_details.items() %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ key }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    <br>
+    <br>
+    <div style="display: flex;">
+        <img style="width: 50%;" src="data:image/png;base64,{{ book_graph }}" alt="">
+        <img style="width: 50%;" src="data:image/png;base64,{{ section_graph }}" alt="">
+    </div>
+    <button class="download-button" onclick="window.print()">Download this report`</button>
+    <a href="http://localhost:8080/" style="color: aqua;"> Visit us</a>
+  <p>This is an automatic generated Monthly report. Don't reply back</p>
+    <i>Happy Reading</i><br>
+    Team - <b>Book Magnet</b>
+</body>
+</html>
